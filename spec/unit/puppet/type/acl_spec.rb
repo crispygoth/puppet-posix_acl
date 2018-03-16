@@ -126,6 +126,10 @@ describe acl_type do
         acl_type.new name: '/tmp/foo', permission: ['user::-_-']
       end.to raise_error
     end
+    it 'supports uppercase X for advanced "executable" bit' do
+      resource = acl_type.new name: '/tmp/foo', permission: ['o::rwX']
+      expect(resource[:permission]).to eq(['other::rwX'])
+    end
   end
 
   context 'when removing default parameters' do
