@@ -215,10 +215,10 @@ Puppet::Type.newtype(:posix_acl) do
         s = p.tr '-', ''
         r << (s.sub!('r', '') ? 'r' : '-')
         r << (s.sub!('w', '') ? 'w' : '-')
-        x = s.match(/x/i)
+        x = s.match(%r{x}i)
         if x
           r << x[0]
-          s.sub!(/x/i, '')
+          s.sub!(%r{x}i, '')
         else
           r << '-'
         end
