@@ -218,7 +218,13 @@ Puppet::Type.newtype(:posix_acl) do
         s = p.tr '-', ''
         r << (s.sub!('r', '') ? 'r' : '-')
         r << (s.sub!('w', '') ? 'w' : '-')
-        r << (s.sub!('x', '') ? 'x' : '-')
+        x = s.match(%r{x}i)
+        if x
+          r << x[0]
+          s.sub!(%r{x}i, '')
+        else
+          r << '-'
+        end
         raise ArgumentError, %(Invalid permission set "#{p}".) unless s.empty?
       end
       r
