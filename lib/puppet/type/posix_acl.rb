@@ -162,8 +162,9 @@ Puppet::Type.newtype(:posix_acl) do
     end
 
     def set_insync(cur_perm) # rubocop:disable Style/AccessorMethodName
-      should = @should.uniq.sort
-      (cur_perm.sort == should) || (provider.check_set && (should - cur_perm).empty?)
+      should = @should.uniq.sort.map { |x| x.downcase }
+      cp = cur_perm.map { |x| x.downcase }
+      (cp.sort == should) || (provider.check_set && (should - cp).empty?)
     end
 
     def purge_insync(cur_perm)
